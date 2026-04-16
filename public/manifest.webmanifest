@@ -1,0 +1,19 @@
+{
+    "name": "Postpartum Pathways",
+    "short_name": "Postpartum",
+    "description": "Mobile-first postpartum support and recovery app.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#edf2f2",
+    "theme_color": "#4ea8a7",
+    "icons": [
+        {
+            "src": "/icon.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
