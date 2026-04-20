@@ -1,12 +1,12 @@
 "use client";
 
 import { MotherDashboardShell } from "@/components/layout/mother-dashboard-shell";
-import { MotherHomeDashboard } from "@/components/dashboard/mother/mother-home-dashboard";
+import { MotherCarePageContent } from "@/components/dashboard/care/mother-care-page";
 
-export default function MotherHomePage() {
+export default function MotherCarePage() {
     return (
         <MotherDashboardShell>
-            <MotherHomeDashboard />
+            <MotherCarePageContent />
         </MotherDashboardShell>
     );
 }
