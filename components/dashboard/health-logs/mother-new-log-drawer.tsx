@@ -369,13 +369,13 @@ export function MotherNewLogDrawer({
                                     </span>
                                 </div>
                                 {!isEditMode ? (
-                                    <button
-                                        type="button"
-                                        className="mt-3 flex min-h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[#d7e6ea] bg-white text-[0.8rem] font-bold text-[#5a9392]"
+                                    <Link
+                                        href="/dashboard/mother/logs/epds"
+                                        className="mt-3 flex min-h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[#d7e6ea] bg-white text-[0.8rem] font-bold text-[#5a9392] no-underline"
                                     >
                                         <ClipboardCheck size={14} />
                                         Complete EPDS Questionnaire
-                                    </button>
+                                    </Link>
                                 ) : null}
                             </article>
                         </section>
@@ -407,8 +407,8 @@ export function MotherNewLogDrawer({
                                             type="button"
                                             key={level}
                                             className={`min-h-[32px] rounded-lg border px-0.5 text-center text-[0.65rem] font-bold sm:text-[0.72rem] ${bleedingLevel === level
-                                                    ? "border-brand bg-brand text-white"
-                                                    : "border-[#dce3e8] bg-white text-[#415063]"
+                                                ? "border-brand bg-brand text-white"
+                                                : "border-[#dce3e8] bg-white text-[#415063]"
                                                 }`}
                                             onClick={() => setBleedingLevel(level)}
                                         >

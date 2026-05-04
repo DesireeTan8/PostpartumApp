@@ -246,7 +246,7 @@ export function HealthLogsPageContent() {
 
     return (
         <div className="relative mx-auto w-full max-w-[800px] pb-[120px] lg:max-w-[880px] lg:pb-12">
-            <div className="-mx-4 mb-4 border-t border-slate-100 bg-surface px-4 pt-4 lg:-mx-8 lg:px-8">
+            <div className="-mx-4 mb-4 px-4 pt-4 lg:-mx-8 lg:px-8">
                 {weekReady ? (
                     <div
                         className="flex w-full select-none items-stretch justify-between gap-2 overflow-x-auto pb-0.5 [touch-action:pan-y] [scrollbar-width:thin]"
@@ -268,10 +268,10 @@ export function HealthLogsPageContent() {
                                     aria-selected={selected}
                                     aria-current={isToday ? "date" : undefined}
                                     className={`flex min-h-[68px] min-w-11 flex-1 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-3 transition-[background-color,color,box-shadow] ${selected
-                                            ? "bg-brand text-white shadow-md"
-                                            : isToday
-                                                ? "bg-slate-100 text-slate-700"
-                                                : "bg-slate-50 text-slate-600 hover:bg-slate-100"
+                                        ? "bg-brand text-white shadow-md"
+                                        : isToday
+                                            ? "bg-slate-100 text-slate-700"
+                                            : "bg-slate-50 text-slate-600 hover:bg-slate-100"
                                         }`}
                                     onClick={() => setSelectedDayKey((k) => (k === day.key ? null : day.key))}
                                 >
@@ -389,25 +389,27 @@ export function HealthLogsPageContent() {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="mb-3 flex flex-wrap gap-2">
-                                    <div className={mood.className}>
-                                        <MoodIcon size={16} className="shrink-0 opacity-90" aria-hidden />
+                                <div className="mb-3 flex flex-wrap gap-3">
+                                    <div className={`${mood.className} lg:flex-1 lg:justify-center lg:py-6`}>
+                                        < MoodIcon size={16} className="shrink-0 opacity-90" aria-hidden />
                                         <span>{mood.label}</span>
                                     </div>
-                                    <div className={`${badgeBase} bg-[#f0f3f5] text-[#3d4a5c]`}>
+                                    <div className={`${badgeBase} lg:flex-1 lg:justify-center lg:py-6 bg-[#f0f3f5] text-[#3d4a5c]`}>
                                         <Activity size={16} className="shrink-0 opacity-90" aria-hidden />
                                         <span>PAIN {log.pain_level != null ? `${log.pain_level}/10` : "—"}</span>
                                     </div>
-                                    <div className={bleed.className}>
+                                    <div className={`${bleed.className} lg:flex-1 lg:justify-center lg:py-6`}>
                                         <Droplets size={16} className="shrink-0 opacity-90" aria-hidden />
                                         <span>{bleed.label}</span>
                                     </div>
                                 </div>
-                                {log.reflections?.trim() ? (
-                                    <blockquote className="m-0 mb-3 rounded-xl border-0 bg-[#f4f7f8] px-3.5 py-3 text-[0.9rem] italic leading-normal text-[#3d4d56]">
-                                        &ldquo;{log.reflections.trim()}&rdquo;
-                                    </blockquote>
-                                ) : null}
+                                {
+                                    log.reflections?.trim() ? (
+                                        <blockquote className="m-0 mb-3 rounded-xl border-0 bg-[#f4f7f8] px-3.5 py-3 text-[0.9rem] italic leading-normal text-[#3d4d56]">
+                                            &ldquo;{log.reflections.trim()}&rdquo;
+                                        </blockquote>
+                                    ) : null
+                                }
                                 <Link
                                     href={`/dashboard/mother/logs/${log.id}`}
                                     className="inline-flex items-center gap-1 text-[0.88rem] font-bold text-brand no-underline hover:underline"
@@ -419,10 +421,11 @@ export function HealthLogsPageContent() {
                         );
                     })}
                 </ul>
-            )}
+            )
+            }
 
-            <p className="mx-0 my-7 mb-2 flex items-center justify-center gap-2 text-[0.82rem] text-muted">
-                <Calendar size={16} aria-hidden />
+            <p className="mx-0 my-7 mb-2 flex items-center justify-center gap-2 text-[0.82rem] text-muted lg:my-16 lg:flex-col lg:gap-2">
+                <Calendar size={16} aria-hidden className="lg:size-7 lg:text-[#b8c0cc]" />
                 End of recent history
             </p>
 
@@ -435,14 +438,16 @@ export function HealthLogsPageContent() {
                 <Plus size={28} strokeWidth={2.5} />
             </button>
 
-            {showNewLogDrawer ? (
-                <MotherNewLogDrawer
-                    onClose={() => setShowNewLogDrawer(false)}
-                    onSaved={() => {
-                        if (userId) void loadLogs(userId);
-                    }}
-                />
-            ) : null}
-        </div>
+            {
+                showNewLogDrawer ? (
+                    <MotherNewLogDrawer
+                        onClose={() => setShowNewLogDrawer(false)}
+                        onSaved={() => {
+                            if (userId) void loadLogs(userId);
+                        }}
+                    />
+                ) : null
+            }
+        </div >
     );
 }

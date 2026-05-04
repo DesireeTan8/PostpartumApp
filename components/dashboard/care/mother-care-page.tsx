@@ -267,7 +267,7 @@ export function MotherCarePageContent() {
     ];
 
     return (
-        <div className="relative mx-auto w-full max-w-[520px] pb-28">
+        <div className="relative mx-auto w-full max-w-[520px] pb-28 lg:max-w-[760px]">
             <div
                 className="mb-5 flex rounded-xl bg-shell-sidebar p-1.5 shadow-[inset_0_1px_2px_rgba(26,44,52,0.05)]"
                 role="tablist"

@@ -6,6 +6,7 @@ import {
     Activity,
     CalendarClock,
     Clock,
+    ClipboardCheck,
     Droplets,
     MessageCircle,
     Pill,
@@ -366,7 +367,7 @@ export function MotherHomeDashboard() {
                 <h2 className="mb-3.5 mt-0 text-[0.72rem] font-extrabold uppercase tracking-widest text-[#5a6672]">
                     Quick actions
                 </h2>
-                <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
                     <Link
                         href="/dashboard/mother/logs/new"
                         className="flex flex-col gap-1.5 rounded-2xl border border-[#e2e9eb] bg-white px-3.5 py-4 text-inherit no-underline transition-[box-shadow,border-color] hover:border-[#c5ddd4] hover:shadow-[0_6px_20px_rgba(45,90,80,0.08)]"
@@ -398,6 +399,14 @@ export function MotherHomeDashboard() {
                         <MessageCircle className="mb-1 text-[#8b7fc7]" size={26} />
                         <span className="text-[0.95rem] font-extrabold">Ask chat</span>
                         <span className="text-[0.78rem] leading-snug text-muted">Get instant advice</span>
+                    </Link>
+                    <Link
+                        href="/dashboard/mother/logs/epds/history"
+                        className="flex flex-col gap-1.5 rounded-2xl border border-[#e2e9eb] bg-white px-3.5 py-4 text-inherit no-underline transition-[box-shadow,border-color] hover:border-[#c5ddd4] hover:shadow-[0_6px_20px_rgba(45,90,80,0.08)]"
+                    >
+                        <ClipboardCheck className="mb-1 text-[#5f7ac9]" size={26} />
+                        <span className="text-[0.95rem] font-extrabold">Assessment History</span>
+                        <span className="text-[0.78rem] leading-snug text-muted">View EPDS trends</span>
                     </Link>
                 </div>
             </section>

@@ -17,6 +17,7 @@ function ensureVapidConfigured() {
 }
 
 export type StoredPushSubscription = {
+    id?: string;
     endpoint: string;
     p256dh: string;
     auth_key: string;
@@ -40,4 +41,17 @@ export function sendWebPush(sub: StoredPushSubscription, payload: { title: strin
         TTL: 60 * 60,
         urgency: "normal",
     });
+}
+
+export function webPushStatusCode(error: unknown): number | null {
+    if (!error || typeof error !== "object") return null;
+    const maybe = error as { statusCode?: unknown; status?: unknown };
+    const code = typeof maybe.statusCode === "number" ? maybe.statusCode : typeof maybe.status === "number" ? maybe.status : null;
+    return Number.isFinite(code) ? code : null;
+}
+
+export function isPermanentWebPushError(error: unknown): boolean {
+    const status = webPushStatusCode(error);
+    // Typical permanent subscription failures from push providers.
+    return status === 404 || status === 410;
 }

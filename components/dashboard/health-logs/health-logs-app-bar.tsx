@@ -37,9 +37,9 @@ export function HealthLogsAppBar() {
                 Health logs
             </h1>
             <label
-                className={`relative box-border flex min-h-10 min-w-0 cursor-text items-center rounded-full border border-line bg-white py-0 pl-[38px] pr-3 lg:min-w-0 lg:max-w-[420px] lg:flex-1 ${healthLogsSearchExpanded
-                        ? "max-lg:!flex max-lg:absolute max-lg:inset-x-4 max-lg:top-1/2 max-lg:z-50 max-lg:max-w-none max-lg:-translate-y-1/2 max-lg:shadow-[0_8px_24px_rgba(36,65,76,0.16)]"
-                        : "max-lg:hidden"
+                className={`relative box-border flex justify-start min-h-10 min-w-0 cursor-text items-center rounded-full border border-line bg-[#f5f8f9] py-0 pl-[38px] pr-3 lg:min-w-0 lg:max-w-[420px] lg:flex-1 ${healthLogsSearchExpanded
+                    ? "max-lg:!flex max-lg:absolute max-lg:inset-x-4 max-lg:top-1/2 max-lg:z-50 max-lg:max-w-none max-lg:-translate-y-1/2 max-lg:shadow-[0_8px_24px_rgba(36,65,76,0.16)]"
+                    : "max-lg:hidden"
                     }`}
                 onClick={() => {
                     if (!healthLogsSearchExpanded) openHealthLogsSearch();
@@ -67,7 +67,7 @@ export function HealthLogsAppBar() {
                 />
             </label>
             <div
-                className={`flex shrink-0 items-center gap-2 self-center ${healthLogsSearchExpanded ? "max-lg:invisible max-lg:pointer-events-none" : ""
+                className={`ml-auto flex shrink-0 items-center gap-2 self-center ${healthLogsSearchExpanded ? "max-lg:invisible max-lg:pointer-events-none" : ""
                     }`}
             >
                 <button
