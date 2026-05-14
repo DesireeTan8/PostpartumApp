@@ -120,7 +120,7 @@ function DrawerCloseControl({
     );
 }
 
-const sectionLabel = "mb-2 flex items-center gap-2 text-[0.68rem] font-extrabold uppercase tracking-[0.08em] text-[#8b96a8]";
+const sectionLabel = "mb-2 flex items-center gap-2 text-[0.68rem] font-extrabold uppercase tracking-[0.08em] text-[#8b96a8] lg:mb-4 lg:text-[1rem] lg:tracking-normal lg:text-[#2a3340] lg:[&>svg]:grid lg:[&>svg]:size-8 lg:[&>svg]:rounded-full lg:[&>svg]:border lg:[&>svg]:border-[#cfe7e7] lg:[&>svg]:bg-[#eef8f8] lg:[&>svg]:p-1.5 lg:[&>svg]:text-brand";
 
 export function MotherNewLogDrawer({
     closeTo = "/dashboard/mother/logs",

@@ -31,12 +31,12 @@ export function RegistrationLayout({
     const router = useRouter();
 
     return (
-        <div className="flex min-h-dvh flex-col bg-warm-canvas">
+        <div className="flex min-h-dvh flex-col bg-[#f8fafb]">
             <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-[#f0e4d4] bg-white/85 px-5 py-4 backdrop-blur-sm">
                 <Link href="/auth/welcome" className={logoClass}>
                     Postpartum <span>Pathways</span>
                 </Link>
-                <nav className="flex flex-wrap gap-1.5 rounded-full bg-[#f3ebe0] p-1" aria-label="Registration role">
+                <nav className="flex flex-wrap gap-1.5 rounded-full bg-[#eef6f6] p-1" aria-label="Registration role">
                     {roleTabs.map((tab) => (
                         <Link
                             key={tab.id}
@@ -68,8 +68,7 @@ export function RegistrationLayout({
 
                 <div className="mx-auto flex w-full max-w-[1120px] flex-1 flex-col gap-6 px-5 py-5 pb-8 min-[900px]:flex-row min-[900px]:items-start min-[900px]:gap-10 min-[900px]:px-7 min-[900px]:pb-12">
                     <div className="min-[900px]:min-w-0 min-[900px]:flex-1">
-                        <div className="rounded-2xl border border-[#eee6d8] bg-surface p-5 pb-7 shadow-[0_8px_32px_rgba(45,55,72,0.08)] min-[900px]:p-8 min-[900px]:pb-9">
-                            {children}
+                        <div className="rounded-2xl border border-[#e3e8ed] bg-white p-5 pb-7 shadow-[0_8px_32px_rgba(45,55,72,0.08)] min-[900px]:p-8 min-[900px]:pb-9">                            {children}
                         </div>
                     </div>
                     <aside className="min-[900px]:sticky min-[900px]:top-6 min-[900px]:w-[340px] min-[900px]:max-w-full min-[900px]:shrink-0">

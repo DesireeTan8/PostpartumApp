@@ -211,7 +211,7 @@ export function MotherCarePageContent() {
             trailing: (
                 <button
                     type="button"
-                    className="inline-flex size-10 items-center justify-center rounded-xl border-0 bg-transparent text-brand transition-colors hover:bg-[#eef5f5] lg:size-11"
+                    className="inline-flex size-10 items-center justify-center rounded-xl border-0 bg-transparent text-brand transition-colors hover:bg-[#eef5f5] lg:size-11 lg:ml-auto"
                     aria-label="Add reminder"
                     onClick={() => setShowDrawer(true)}
                 >

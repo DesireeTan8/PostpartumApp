@@ -1,19 +1,7 @@
 "use client";
 
-import { DashboardNav } from "@/components/navigation/dashboard-nav";
-import SignOutButton from "@/components/auth/sign-out-button";
-import { CaregiverCareRequestsContent } from "@/components/dashboard/caregiver/caregiver-care-requests";
+import { CaregiverDashboardHome } from "@/components/dashboard/caregiver/caregiver-dashboard-home";
 
 export default function CaregiverHomePage() {
-    return (
-        <main className="flex min-h-dvh flex-col bg-gradient-to-b from-[#e9f6f1] via-[#dff0ea] to-[#d4ebe4] pb-[88px]">
-            <header className="grid h-[100px] grid-cols-[40px_1fr_40px] items-end border-b border-[#c5ddd4] bg-white/92 px-[18px] pb-4">
-                <span />
-                <h1 className="m-0 text-center text-[17px] font-extrabold leading-none">Home</h1>
-                <SignOutButton />
-            </header>
-            <CaregiverCareRequestsContent />
-            <DashboardNav role="caregiver" />
-        </main>
-    );
+    return <CaregiverDashboardHome />;
 }

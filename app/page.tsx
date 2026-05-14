@@ -23,10 +23,10 @@ export default function SplashScreenPage() {
       >
         <HeartPulse size={42} strokeWidth={2.4} />
       </div>
-      <h1 className="m-0 mt-3 text-[17px] font-extrabold">
+      <h1 className="m-0 mt-3 text-[17px] font-extrabold lg:text-[20px]">
         Postpartum Pathways
       </h1>
-      <p className="m-0 mt-0.5 text-xs text-[#2f3442]">
+      <p className="m-0 mt-0.5 text-xs text-[#2f3442] lg:text-[16px]">
         Supporting Your Postpartum Recovery
       </p>
       <span

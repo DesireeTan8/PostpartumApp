@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CalendarDays, ChevronRight, ClipboardList, Clock3, UserRound } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
+import { CaregiverNoLinkedMothersPanel } from "@/components/dashboard/caregiver/caregiver-no-linked-mothers-panel";
 
 type ProfileMini = { full_name: string | null; avatar_url: string | null };
 type MotherProfilesJoin = {
@@ -196,16 +197,21 @@ export function CaregiverCareRequestsContent() {
 
     if (!supportedMotherId) {
         return (
-            <div className="mx-auto max-w-[520px] px-4 pb-28 pt-2">
-                <p className="rounded-2xl border border-dashed border-[#d5dde2] bg-[#f8fafb] px-4 py-6 text-center text-[0.9rem] text-muted">
-                    Link to a supported mother in your profile to see her care requests here.
-                </p>
+            <div className="mx-auto max-w-[520px] px-4 pb-6 pt-2">
+                <div className="mb-4 flex items-center gap-2 text-ink">
+                    <ClipboardList className="size-6 text-brand" strokeWidth={2} aria-hidden />
+                    <h2 className="m-0 text-[1.15rem] font-bold tracking-tight">Care requests</h2>
+                </div>
+                <CaregiverNoLinkedMothersPanel
+                    hint="Care requests use the supported mother on your caregiver profile. Set that first to see her submissions."
+                    showPatientsLink={false}
+                />
             </div>
         );
     }
 
     return (
-        <div className="mx-auto w-full max-w-[520px] px-4 pb-28 pt-2">
+        <div className="mx-auto w-full max-w-[520px] px-4 pb-6 pt-2">
             <div className="mb-4 flex items-center gap-2 text-ink">
                 <ClipboardList className="size-6 text-brand" strokeWidth={2} aria-hidden />
                 <h2 className="m-0 text-[1.15rem] font-bold tracking-tight">Her care requests</h2>
