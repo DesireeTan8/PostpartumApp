@@ -14,7 +14,7 @@ function MotherAiChatContent() {
         setPageHeader({
             title: "Support Chats",
             layout: "standard",
-            showSettings: false,
+            showSearch: false,
         });
         return () => setPageHeader(null);
     }, [setPageHeader]);
@@ -95,7 +95,7 @@ function MotherAiChatContent() {
 
 export default function MotherAiChatPage() {
     return (
-        <MotherDashboardShell showMobileAppHeader={false}>
+        <MotherDashboardShell>
             <MotherAiChatContent />
         </MotherDashboardShell>
     );

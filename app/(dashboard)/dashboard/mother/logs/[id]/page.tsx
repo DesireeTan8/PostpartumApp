@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { MotherDashboardShell } from "@/components/layout/mother-dashboard-shell";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
-import { MOTHER_DASHBOARD_HEADER_ICON_LINK } from "@/components/layout/mother-dashboard-header-chrome";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
+import { HEADER_ICON_LINK } from "@/components/layout/Header";
 
 type HealthLogDetailRow = {
     id: string;
@@ -177,7 +177,7 @@ export default function HealthLogDetailPage() {
             trailing: (
                 <Link
                     href={`/dashboard/mother/logs/new?edit=${id}`}
-                    className={MOTHER_DASHBOARD_HEADER_ICON_LINK}
+                    className={HEADER_ICON_LINK}
                     aria-label="Edit entry"
                 >
                     <Pencil size={18} aria-hidden />

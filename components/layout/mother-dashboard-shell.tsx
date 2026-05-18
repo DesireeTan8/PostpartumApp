@@ -1,5 +1,8 @@
 "use client";
 
+/**
+ * Mother dashboard frame (sidebar, bottom nav, sticky header). Role shells for all dashboards live in `components/layout/`.
+ */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -15,16 +18,15 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { MotherBottomNav } from "@/components/dashboard/mother/mother-bottom-nav";
-import {
-    MotherPageHeaderProvider,
-    useMotherPageHeader,
-} from "@/components/layout/mother-dashboard-header-context";
+import { Header } from "@/components/layout/Header";
 import {
     MotherDefaultDiscoverChrome,
     MotherDetailPageChrome,
+    MotherPageHeaderProvider,
     MotherStandardPageChrome,
     motherFallbackPageTitle,
-} from "@/components/layout/mother-dashboard-header-chrome";
+    useMotherPageHeader,
+} from "@/components/layout/mother-dashboard-header";
 
 const base = "/dashboard/mother";
 
@@ -85,11 +87,7 @@ function MotherDashboardHeaderHost({ showMobileBrandWhenEmpty }: { showMobileBra
         );
     }, [pageHeader, pathname, profileSlot, showMobileBrandWhenEmpty]);
 
-    return (
-        <header className="sticky top-0 z-30 max-lg:overflow-hidden border-b border-[#e0e8ea] bg-white/94 backdrop-blur-md">
-            {inner}
-        </header>
-    );
+    return <Header tone="mother">{inner}</Header>;
 }
 
 function MotherDashboardShellInner({
@@ -268,4 +266,4 @@ export function MotherDashboardShell({
 }
 
 // Re-export for pages that configure the shared header
-export { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
+export { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";

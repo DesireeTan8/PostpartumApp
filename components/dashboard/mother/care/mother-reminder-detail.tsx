@@ -13,8 +13,8 @@ import {
     Trophy,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
-import { MOTHER_DASHBOARD_HEADER_ICON_LINK } from "@/components/layout/mother-dashboard-header-chrome";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
+import { HEADER_ICON_LINK } from "@/components/layout/Header";
 import {
     computeNextDueIso,
     formatDueTime,
@@ -170,7 +170,7 @@ export function MotherReminderDetail({ reminderId }: Props) {
             trailing: (
                 <button
                     type="button"
-                    className={`${MOTHER_DASHBOARD_HEADER_ICON_LINK} text-[#d24a4a] hover:text-[#b83838]`}
+                    className={`${HEADER_ICON_LINK} text-[#d24a4a] hover:text-[#b83838]`}
                     aria-label="Delete reminder"
                     disabled={actionBusy}
                     onClick={() => void onDelete()}
@@ -183,6 +183,7 @@ export function MotherReminderDetail({ reminderId }: Props) {
     }, [loading, reminder, actionBusy, onDelete, setPageHeader]);
 
     const nextPending = events.find((e) => e.status === "pending");
+    const recentActivity = events.filter((e) => e.status === "completed" || e.status === "missed");
     const { compliance, streak } = complianceAndStreak(events);
 
     const onMarkDone = async () => {
@@ -306,38 +307,44 @@ export function MotherReminderDetail({ reminderId }: Props) {
                 <h3 className="mb-2.5 text-[0.68rem] font-extrabold uppercase tracking-[0.08em] text-[#8b96a8]">
                     Recent activity
                 </h3>
-                <ul className="m-0 flex list-none flex-col gap-0 overflow-hidden rounded-2xl border border-[#e8ecee] bg-white p-0 shadow-[0_4px_18px_rgba(35,55,65,0.04)]">
-                    {events.slice(0, 12).map((e, idx) => {
-                        const isDone = e.status === "completed";
-                        const isMissed = e.status === "missed";
-                        const label = isDone
-                            ? `Taken at ${e.completed_at ? formatDueTime(e.completed_at) : formatDueTime(e.due_at)}`
-                            : isMissed
-                                ? "Missed"
-                                : "Pending";
-                        return (
-                            <li
-                                key={e.id}
-                                className={`flex items-center gap-3 border-[#f0f3f5] px-3.5 py-3 ${idx > 0 ? "border-t" : ""}`}
-                            >
-                                {isDone ? (
-                                    <Check className="shrink-0 text-[#1f6b5c]" size={18} aria-hidden />
-                                ) : isMissed ? (
-                                    <AlertCircle className="shrink-0 text-[#c53030]" size={18} aria-hidden />
-                                ) : (
-                                    <Clock className="shrink-0 text-[#8b96a8]" size={18} aria-hidden />
-                                )}
-                                <div className="min-w-0 flex-1">
-                                    <p className="m-0 text-[0.72rem] font-extrabold uppercase tracking-wide text-[#8b96a8]">
-                                        {formatShortDate(e.due_at)}
-                                    </p>
-                                    <p className="mb-0 mt-0.5 text-[0.86rem] font-semibold text-[#2a3340]">{label}</p>
-                                </div>
-                                <ChevronRight className="shrink-0 text-[#c5cdd4]" size={18} aria-hidden />
-                            </li>
-                        );
-                    })}
-                </ul>
+                {recentActivity.length === 0 ? (
+                    <div className="rounded-2xl border border-[#e8ecee] bg-white px-4 py-5 text-center text-[0.88rem] text-muted shadow-[0_4px_18px_rgba(35,55,65,0.04)]">
+                        No recent activity yet.
+                    </div>
+                ) : (
+                    <ul className="m-0 flex list-none flex-col gap-0 overflow-hidden rounded-2xl border border-[#e8ecee] bg-white p-0 shadow-[0_4px_18px_rgba(35,55,65,0.04)]">
+                        {recentActivity.slice(0, 12).map((e, idx) => {
+                            const isDone = e.status === "completed";
+                            const isMissed = e.status === "missed";
+                            const label = isDone
+                                ? `Taken at ${e.completed_at ? formatDueTime(e.completed_at) : formatDueTime(e.due_at)}`
+                                : isMissed
+                                    ? "Missed"
+                                    : "Pending";
+                            return (
+                                <li
+                                    key={e.id}
+                                    className={`flex items-center gap-3 border-[#f0f3f5] px-3.5 py-3 ${idx > 0 ? "border-t" : ""}`}
+                                >
+                                    {isDone ? (
+                                        <Check className="shrink-0 text-[#1f6b5c]" size={18} aria-hidden />
+                                    ) : isMissed ? (
+                                        <AlertCircle className="shrink-0 text-[#c53030]" size={18} aria-hidden />
+                                    ) : (
+                                        <Clock className="shrink-0 text-[#8b96a8]" size={18} aria-hidden />
+                                    )}
+                                    <div className="min-w-0 flex-1">
+                                        <p className="m-0 text-[0.72rem] font-extrabold uppercase tracking-wide text-[#8b96a8]">
+                                            {formatShortDate(e.due_at)}
+                                        </p>
+                                        <p className="mb-0 mt-0.5 text-[0.86rem] font-semibold text-[#2a3340]">{label}</p>
+                                    </div>
+                                    <ChevronRight className="shrink-0 text-[#c5cdd4]" size={18} aria-hidden />
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
             </section>
 
             {nextPending ? (

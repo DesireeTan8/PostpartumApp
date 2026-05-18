@@ -20,7 +20,7 @@ import {
     localTimestampIso,
     recurrenceLabel,
 } from "@/lib/care-reminders";
-import { MotherReminderTypePicker } from "@/components/dashboard/care/mother-reminder-type-picker";
+import { MotherReminderTypePicker } from "@/components/dashboard/mother/care/mother-reminder-type-picker";
 
 type MotherReminderDrawerProps = {
     closeTo?: string;
@@ -235,11 +235,46 @@ export function MotherReminderDrawer({
 
         if (isEditMode && editId) {
             const { error } = await supabase.from("care_reminders").update(payload).eq("id", editId).eq("mother_user_id", userId);
-            setSaving(false);
             if (error) {
+                setSaving(false);
                 setSaveError(error.message);
                 return;
             }
+
+            // Active list is driven by pending reminder events; when schedule changes,
+            // replace pending rows so due time/date immediately reflects edits.
+            const { error: deletePendingError } = await supabase
+                .from("care_reminder_events")
+                .delete()
+                .eq("reminder_id", editId)
+                .eq("status", "pending");
+            if (deletePendingError) {
+                setSaving(false);
+                setSaveError(deletePendingError.message);
+                return;
+            }
+
+            const nextDue = firstEventDueIso({
+                startDate,
+                reminderTime: normalizedTime,
+                recurrence,
+            });
+            const hasValidEndDate = hasEndDate && !!endDate;
+            const withinEndDate = !hasValidEndDate || new Date(nextDue).getTime() <= new Date(`${endDate!}T23:59:59`).getTime();
+            if (withinEndDate) {
+                const { error: insertPendingError } = await supabase.from("care_reminder_events").insert({
+                    reminder_id: editId,
+                    due_at: nextDue,
+                    status: "pending",
+                });
+                if (insertPendingError) {
+                    setSaving(false);
+                    setSaveError(insertPendingError.message);
+                    return;
+                }
+            }
+
+            setSaving(false);
             if (onSaved) onSaved();
             closeDrawer();
             return;

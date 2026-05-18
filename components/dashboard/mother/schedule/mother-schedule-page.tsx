@@ -23,7 +23,7 @@ import {
     UserRound,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
 
 type ScheduleTab = "requests" | "scheduled" | "past";
 type ScheduleFilter = "all" | "this_week" | "specialists" | "home";
@@ -434,27 +434,24 @@ export function MotherSchedulePageContent() {
             setPageHeader({
                 title: "Schedule",
                 layout: "standard",
-                showSettings: false,
             });
             return () => setPageHeader(null);
         }
         if (view.type === "request_form") {
             setPageHeader({
                 title: "Request Care",
-                layout: "detail",
-                backHref: "/dashboard/mother/schedule",
+                layout: "standard",
+                backAction: () => setView({ type: "list" }),
                 backLabel: "Back to schedule",
-                showSettings: false,
             });
             return () => setPageHeader(null);
         }
         if (view.type === "request_status") {
             setPageHeader({
                 title: "Request Status",
-                layout: "detail",
-                backHref: "/dashboard/mother/schedule",
+                layout: "standard",
+                backAction: () => setView({ type: "list" }),
                 backLabel: "Back to schedule",
-                showSettings: false,
             });
             return () => setPageHeader(null);
         }
@@ -470,8 +467,8 @@ export function MotherSchedulePageContent() {
                     : "https://calendar.google.com/calendar";
             setPageHeader({
                 title: "Appointment Details",
-                layout: "detail",
-                backHref: "/dashboard/mother/schedule",
+                layout: "standard",
+                backAction: () => setView({ type: "list" }),
                 backLabel: "Back to schedule",
                 trailing: (
                     <a
@@ -483,7 +480,6 @@ export function MotherSchedulePageContent() {
                         Add to Calendar
                     </a>
                 ),
-                showSettings: false,
             });
             return () => setPageHeader(null);
         }
@@ -695,7 +691,7 @@ export function MotherSchedulePageContent() {
 
     if (view.type === "request_form") {
         return (
-            <div className="mx-auto w-full max-w-[520px] pb-24 lg:max-w-[760px] xl:max-w-[820px]">
+            <div className="mx-auto w-full max-w-[520px] pb-24">
                 <article className="mb-5 flex gap-3 rounded-2xl border border-[#c5e4e1] bg-[#eaf6f5] px-4 py-3.5 text-[#325c60] shadow-[0_4px_12px_rgba(45,90,85,0.06)]">
                     <div className="shrink-0">
                         <span className="grid size-10 place-items-center rounded-full bg-white/70 text-brand shadow-sm">
@@ -710,7 +706,7 @@ export function MotherSchedulePageContent() {
                     </div>
                 </article>
 
-                <div className="mb-5 lg:mb-8">
+                <div className="mb-5">
                     <p className="mb-2 text-[0.95rem] font-bold text-ink">Reason for Visit</p>
                     <div className="relative">
                         <Heart
@@ -733,7 +729,7 @@ export function MotherSchedulePageContent() {
                     </div>
                 </div>
 
-                <div className="mb-5 lg:mb-8">
+                <div className="mb-5">
                     <p className="mb-2 text-[0.95rem] font-bold text-ink">Preferred Timeframe</p>
                     <div className="relative mb-2.5">
                         <CalendarDays
@@ -830,8 +826,8 @@ export function MotherSchedulePageContent() {
                                         {s.listingBadge ? (
                                             <span
                                                 className={`mt-auto w-full rounded-lg py-1.5 text-center text-[0.65rem] font-bold leading-tight ${s.availabilityStatus === "away"
-                                                    ? "border border-[#d5dde2] bg-white text-[#3d4a5c]"
-                                                    : "bg-[#d4efed] text-[#1f5c57]"
+                                                        ? "border border-[#d5dde2] bg-white text-[#3d4a5c]"
+                                                        : "bg-[#d4efed] text-[#1f5c57]"
                                                     }`}
                                             >
                                                 {s.listingBadge}
@@ -844,7 +840,7 @@ export function MotherSchedulePageContent() {
                     )}
                 </div>
 
-                <div className="mb-5 lg:mb-8">
+                <div className="mb-5">
                     <p className="mb-2 text-[0.95rem] font-bold text-ink">Symptoms or Notes</p>
                     <textarea
                         className="min-h-[128px] w-full resize-y rounded-2xl border border-[#dce6e9] bg-white px-3 py-3 text-[0.95rem] leading-snug text-ink placeholder:text-[#8b96a8] outline-none"
@@ -894,8 +890,8 @@ export function MotherSchedulePageContent() {
             selectedRequest.window_end
         );
         return (
-            <div className="mx-auto w-full max-w-[520px] pb-24 lg:max-w-[900px] xl:max-w-[1100px]">
-                <section className="mb-5 lg:mb-8">
+            <div className="mx-auto w-full max-w-[520px] pb-24">
+                <section className="mb-5">
                     <div className="mb-3 flex items-center justify-between gap-3">
                         <h2 className="m-0 text-[1.35rem] font-bold tracking-tight text-ink">Timeline</h2>
                         <span
@@ -904,55 +900,49 @@ export function MotherSchedulePageContent() {
                             {badge.label}
                         </span>
                     </div>
-                    <div className="rounded-2xl border border-[#e4e9ec] bg-white px-4 py-5 shadow-[0_4px_16px_rgba(35,55,65,0.05)] lg:px-10 lg:py-10 xl:px-14">
-                        <div className="relative">
-                            {/*horizontal line (desktop only) */}
-                            <span className="hidden lg:block absolute top-4 left-0 w-full h-[2px] bg-[#e2e8ec]" />
-                            <div className="lg:grid lg:grid-cols-3 lg:gap-10 xl:gap-14">
-                                {requestTimeline.map((step, idx) => {
-                                    const isLast = idx === requestTimeline.length - 1;
-                                    const state = careRequestTimelineStepState(idx, selectedRequest.status);
-                                    const lineTeal = state === "done" && !isLast;
-                                    const titleClass = state === "current" ? "text-brand" : "text-ink";
-                                    const description = careRequestTimelineDescription(step, serviceTitle, selectedRequest.created_at);
-                                    return (
-                                        <div key={step.id} className={`relative pl-[2.125rem] lg:flex-1 lg:pl-0 lg:text-center lg:pt-10 ${idx > 0 ? "mt-5 lg:mt-0" : ""}`}>
-                                            {!isLast ? (
-                                                <span
-                                                    className={`absolute left-[13px] top-[1.75rem] w-0.5 lg:hidden ${lineTeal ? "bg-brand" : "bg-[#e2e8ec]"}`}
-                                                    style={{ height: "calc(100% + 0.5rem)" }}
-                                                    aria-hidden
-                                                />
-                                            ) : null}
-                                            <span
-                                                className="absolute left-0 top-0.5 flex size-7 items-center justify-center rounded-full lg:left-1/2 lg:-translate-x-1/2 lg:top-0"
-                                                aria-hidden
-                                            >
-                                                {state === "done" ? (
-                                                    <span className="grid size-7 place-items-center rounded-full bg-brand text-white shadow-sm">
-                                                        <Check className="size-4" strokeWidth={2.75} />
-                                                    </span>
-                                                ) : state === "current" ? (
-                                                    <span className="grid size-7 place-items-center rounded-full border-2 border-brand bg-white text-brand">
-                                                        <Clock3 className="size-3.5" strokeWidth={2} />
-                                                    </span>
-                                                ) : (
-                                                    <span className="grid size-7 place-items-center rounded-full border-2 border-[#dde3e8] bg-white">
-                                                        <span className="size-1.5 rounded-full bg-[#b8c2cc]" />
-                                                    </span>
-                                                )}
+                    <div className="rounded-2xl border border-[#e4e9ec] bg-white px-4 py-5 shadow-[0_4px_16px_rgba(35,55,65,0.05)]">
+                        {requestTimeline.map((step, idx) => {
+                            const isLast = idx === requestTimeline.length - 1;
+                            const state = careRequestTimelineStepState(idx, selectedRequest.status);
+                            const lineTeal = state === "done" && !isLast;
+                            const titleClass = state === "current" ? "text-brand" : "text-ink";
+                            const description = careRequestTimelineDescription(step, serviceTitle, selectedRequest.created_at);
+                            return (
+                                <div key={step.id} className={`relative pl-[2.125rem] ${idx > 0 ? "mt-5" : ""}`}>
+                                    {!isLast ? (
+                                        <span
+                                            className={`absolute left-[13px] top-[1.75rem] w-0.5 ${lineTeal ? "bg-brand" : "bg-[#e2e8ec]"}`}
+                                            style={{ height: "calc(100% + 0.5rem)" }}
+                                            aria-hidden
+                                        />
+                                    ) : null}
+                                    <span
+                                        className="absolute left-0 top-0.5 flex size-7 items-center justify-center rounded-full"
+                                        aria-hidden
+                                    >
+                                        {state === "done" ? (
+                                            <span className="grid size-7 place-items-center rounded-full bg-brand text-white shadow-sm">
+                                                <Check className="size-4" strokeWidth={2.75} />
                                             </span>
-                                            <p className={`m-0 text-[0.98rem] font-bold leading-snug ${titleClass}`}>{step.step_label}</p>
-                                            <p className="mb-0 mt-1.5 text-[0.88rem] leading-relaxed text-[#5c6a7a] lg:text-[0.95rem]">{description}</p>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                                        ) : state === "current" ? (
+                                            <span className="grid size-7 place-items-center rounded-full border-2 border-brand bg-white text-brand">
+                                                <Clock3 className="size-3.5" strokeWidth={2} />
+                                            </span>
+                                        ) : (
+                                            <span className="grid size-7 place-items-center rounded-full border-2 border-[#dde3e8] bg-white">
+                                                <span className="size-1.5 rounded-full bg-[#b8c2cc]" />
+                                            </span>
+                                        )}
+                                    </span>
+                                    <p className={`m-0 text-[0.98rem] font-bold leading-snug ${titleClass}`}>{step.step_label}</p>
+                                    <p className="mb-0 mt-1.5 text-[0.88rem] leading-relaxed text-[#5c6a7a]">{description}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </section>
 
-                <section className="mb-5 rounded-2xl border border-[#e4e9ec] bg-white px-4 py-5 shadow-[0_4px_16px_rgba(35,55,65,0.05)] lg:px-10 lg:py-8 xl:px-14">
+                <section className="mb-5 rounded-2xl border border-[#e4e9ec] bg-white px-4 py-5 shadow-[0_4px_16px_rgba(35,55,65,0.05)]">
                     <h3 className="mb-4 mt-0 text-[1.05rem] font-bold text-ink">Request Overview</h3>
                     <div className="mb-5 flex items-start justify-between gap-3 border-b border-[#eef2f4] pb-4">
                         <div className="min-w-0">
@@ -1040,31 +1030,29 @@ export function MotherSchedulePageContent() {
                     </p>
                 </div>
 
-                <div className="lg:flex lg:justify-end lg:gap-4">
-                    <button
-                        type="button"
-                        className="mb-2.5 flex h-[52px] w-full items-center justify-center rounded-2xl border border-[#d4dce1] bg-white text-[0.96rem] font-bold text-[#1f232b] lg:mb-0 lg:w-[220px]"
-                        onClick={() => {
-                            setRequestServiceId(serviceJoin ? (careServices.find((s) => s.name === serviceJoin.name)?.id ?? "") : "");
-                            setRequestDate(selectedRequest.preferred_date ?? localDateKey(new Date()));
-                            setRequestWindowStart((selectedRequest.window_start ?? "09:00").slice(0, 5));
-                            setRequestWindowEnd((selectedRequest.window_end ?? "17:00").slice(0, 5));
-                            setRequestProviderId(selectedRequest.preferred_provider_user_id ?? "");
-                            setRequestNotes(selectedRequest.notes ?? "");
-                            setView({ type: "request_form", seedRequestId: selectedRequest.id });
-                        }}
-                    >
-                        Reschedule Request
-                    </button>
-                    <button
-                        type="button"
-                        className="flex h-[52px] w-full items-center justify-center rounded-2xl border border-[#e8a4b8] bg-white text-[0.96rem] font-bold text-[#a33f58] disabled:opacity-60 lg:w-[180px]"
-                        disabled={savingAction}
-                        onClick={() => void cancelCurrentRequest()}
-                    >
-                        Cancel Request
-                    </button>
-                </div>
+                <button
+                    type="button"
+                    className="mb-2.5 flex h-[52px] w-full items-center justify-center rounded-2xl border border-[#d4dce1] bg-white text-[0.96rem] font-bold text-[#1f232b]"
+                    onClick={() => {
+                        setRequestServiceId(serviceJoin ? (careServices.find((s) => s.name === serviceJoin.name)?.id ?? "") : "");
+                        setRequestDate(selectedRequest.preferred_date ?? localDateKey(new Date()));
+                        setRequestWindowStart((selectedRequest.window_start ?? "09:00").slice(0, 5));
+                        setRequestWindowEnd((selectedRequest.window_end ?? "17:00").slice(0, 5));
+                        setRequestProviderId(selectedRequest.preferred_provider_user_id ?? "");
+                        setRequestNotes(selectedRequest.notes ?? "");
+                        setView({ type: "request_form", seedRequestId: selectedRequest.id });
+                    }}
+                >
+                    Reschedule Request
+                </button>
+                <button
+                    type="button"
+                    className="flex h-[52px] w-full items-center justify-center rounded-2xl border border-[#e8a4b8] bg-white text-[0.96rem] font-bold text-[#a33f58] disabled:opacity-60"
+                    disabled={savingAction}
+                    onClick={() => void cancelCurrentRequest()}
+                >
+                    Cancel Request
+                </button>
             </div>
         );
     }
@@ -1089,79 +1077,101 @@ export function MotherSchedulePageContent() {
 
         return (
             <div className="mx-auto w-full max-w-[520px] pb-24">
-                <article className="mb-5 rounded-2xl border border-[#e8ecee] bg-white px-4 py-4 text-center shadow-[0_4px_16px_rgba(35,55,65,0.06)]">
-                    {providerProfile?.avatar_url ? (
-                        <img src={providerProfile.avatar_url} alt="" className="mx-auto mb-2 size-[84px] rounded-full object-cover" />
-                    ) : (
-                        <span className="mx-auto mb-2 grid size-[84px] place-items-center rounded-full bg-[#eceff2] text-[#8b96a8]">
-                            <UserRound size={34} />
+                <article className="mb-4 border-b border-[#e8ecee] px-4 pb-4 text-center">
+                    <div className="relative mx-auto mb-2 size-[86px]">
+                        {providerProfile?.avatar_url ? (
+                            <img src={providerProfile.avatar_url} alt="" className="size-[86px] rounded-full object-cover" />
+                        ) : (
+                            <span className="grid size-[86px] place-items-center rounded-full bg-[#eceff2] text-[#8b96a8]">
+                                <UserRound size={34} />
+                            </span>
+                        )}
+                        <span className="absolute bottom-0.5 right-0.5 grid size-6 place-items-center rounded-full border-2 border-white bg-[#edf6f5] text-[#5c6a7a]">
+                            <CalendarCheck2 size={12} />
                         </span>
-                    )}
-                    <h2 className="m-0 text-[1.55rem] font-black tracking-tight text-ink">{providerName}</h2>
-                    <p className="mb-0 mt-1 text-[0.92rem] font-semibold text-muted">{profession}</p>
+                    </div>
+                    <h2 className="m-0 text-[1.9rem] font-extrabold tracking-tight text-ink">{providerName}</h2>
+                    <p className="mb-0 mt-1 text-[1rem] font-semibold text-muted">{profession}</p>
                     <span className="mt-2 inline-flex rounded-full bg-[#e8f6f5] px-2.5 py-1 text-[0.72rem] font-extrabold text-brand">
                         Highly Rated
                     </span>
                 </article>
 
-                <section className="mb-4 rounded-2xl border border-[#e8ecee] bg-white px-4 py-4 shadow-[0_4px_16px_rgba(35,55,65,0.06)]">
+                <section className="mb-4 rounded-2xl border border-[#eceff2] bg-white px-4 py-4">
                     <div className="grid gap-3.5">
-                        <div className="flex items-start gap-2.5">
-                            <CalendarDays className="mt-0.5 text-[#9aa5b5]" size={18} />
+                        <div className="flex items-start gap-3">
+                            <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-[#f2f5f7] text-[#9aa5b5]">
+                                <CalendarDays size={16} />
+                            </span>
                             <div>
                                 <p className="m-0 text-[0.68rem] font-extrabold uppercase tracking-wide text-[#8b96a8]">Date</p>
-                                <p className="m-0 text-[1rem] font-bold text-ink">{formatAppointmentDate(selectedAppointment.starts_at)}</p>
+                                <p className="m-0 text-[1.08rem] font-bold text-ink">{formatAppointmentDate(selectedAppointment.starts_at)}</p>
                             </div>
                         </div>
-                        <div className="flex items-start gap-2.5">
-                            <Clock3 className="mt-0.5 text-[#9aa5b5]" size={18} />
+                        <div className="flex items-start gap-3">
+                            <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-[#f2f5f7] text-[#9aa5b5]">
+                                <Clock3 size={16} />
+                            </span>
                             <div>
                                 <p className="m-0 text-[0.68rem] font-extrabold uppercase tracking-wide text-[#8b96a8]">Time</p>
-                                <p className="m-0 text-[1rem] font-bold text-ink">
+                                <p className="m-0 text-[1.05rem] font-bold text-ink">
                                     {formatTime(selectedAppointment.starts_at)} - {formatTime(selectedAppointment.ends_at)} ({durationMinutes} min)
                                 </p>
                             </div>
                         </div>
-                        <div className="flex items-start gap-2.5">
-                            <MapPin className="mt-0.5 text-[#9aa5b5]" size={18} />
+                        <div className="flex items-start gap-3">
+                            <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-[#f2f5f7] text-[#9aa5b5]">
+                                <MapPin size={16} />
+                            </span>
                             <div>
                                 <p className="m-0 text-[0.68rem] font-extrabold uppercase tracking-wide text-[#8b96a8]">Location</p>
-                                <p className="m-0 text-[1rem] font-bold text-ink">{locationLabel}</p>
+                                <p className="m-0 text-[1.05rem] font-bold text-ink">{locationLabel}</p>
                                 <p className="m-0 text-[0.84rem] text-muted">{locationDetails}</p>
                             </div>
                         </div>
-                        <div className="flex items-start gap-2.5">
-                            <Phone className="mt-0.5 text-[#9aa5b5]" size={18} />
+                        <div className="flex items-start gap-3">
+                            <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-[#f2f5f7] text-[#9aa5b5]">
+                                <Phone size={16} />
+                            </span>
                             <div>
                                 <p className="m-0 text-[0.68rem] font-extrabold uppercase tracking-wide text-[#8b96a8]">Contact Info</p>
-                                <p className="m-0 text-[1rem] font-bold text-ink">{selectedAppointment.contact_phone?.trim() || "Shared after confirmation"}</p>
+                                <p className="m-0 text-[1.05rem] font-bold text-ink">
+                                    {selectedAppointment.contact_phone?.trim() || "Not provided yet"}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section className="mb-4 overflow-hidden rounded-2xl border border-[#f0d7dd] bg-[#fdf2f4]">
-                    <div className="bg-[#f8e5e9] px-4 py-2.5">
-                        <p className="m-0 text-[0.75rem] font-extrabold uppercase tracking-wide text-[#8b5465]">Preparation Tips</p>
+                <section className="mb-4 overflow-hidden rounded-2xl border border-[#f1dce1] bg-[#fdf5f7]">
+                    <div className="bg-[#f6e6ea] px-4 py-2.5">
+                        <p className="m-0 text-[0.78rem] font-extrabold uppercase tracking-wide text-[#7f4d5d]">Preparation Tips</p>
                     </div>
                     <div className="px-4 py-3.5">
-                        {(prepTips.length > 0 ? prepTips : [
-                            "Find a quiet, comfortable space where you can speak freely.",
-                            "Prepare any recent discharge papers or vitals if available.",
-                            "Check internet/device connection 5 minutes before the visit.",
-                        ]).map((tip) => (
-                            <p key={tip} className="mb-2 mt-0 flex items-start gap-2 text-[0.92rem] text-[#5a4a52] last:mb-0">
-                                <span className="mt-[7px] size-1.5 rounded-full bg-[#e3a9b8]" aria-hidden />
+                        {(prepTips.length > 0
+                            ? prepTips
+                            : [
+                                "Find a quiet, comfortable space where you can speak freely.",
+                                "Have your discharge papers or recent vitals (if any) ready.",
+                                "Keep a notebook nearby for any post-session instructions.",
+                                "Check your internet connection 5 minutes before the start.",
+                            ]
+                        ).map((tip) => (
+                            <p key={tip} className="mb-2.5 mt-0 flex items-start gap-2 text-[0.95rem] text-[#51474d] last:mb-0">
+                                <span className="mt-[7px] size-1.5 rounded-full bg-[#d593a5]" aria-hidden />
                                 <span>{tip}</span>
                             </p>
                         ))}
                     </div>
                 </section>
 
-                <div className="mb-3 rounded-2xl border border-[#e8ecee] bg-white px-4 py-3.5 text-[0.88rem] text-muted">
-                    <p className="m-0 font-bold text-ink">Video Link Ready</p>
+                <div className="mb-4 rounded-2xl border border-[#eceff2] bg-white px-4 py-3.5 text-[0.88rem] text-muted">
+                    <p className="m-0 flex items-center gap-2 font-bold text-ink">
+                        <BellRing size={14} className="text-[#7c8798]" />
+                        Video Link Ready
+                    </p>
                     <p className="mb-0 mt-1">
-                        The link becomes active 10 minutes before your scheduled time.
+                        The link will become active 10 minutes prior to your scheduled time.
                         {selectedAppointment.meeting_url ? (
                             <>
                                 {" "}
@@ -1177,7 +1187,7 @@ export function MotherSchedulePageContent() {
                     href={createGoogleCalendarUrl(selectedAppointment, providerName, locationDetails)}
                     target="_blank"
                     rel="noreferrer"
-                    className="mb-2 flex h-[52px] w-full items-center justify-center gap-2 rounded-xl border-0 bg-brand text-[0.96rem] font-bold text-white no-underline"
+                    className="mb-2.5 flex h-[52px] w-full items-center justify-center gap-2 rounded-xl border-0 bg-brand text-[0.96rem] font-bold text-white no-underline"
                 >
                     <CalendarCheck2 size={18} />
                     Add to My Calendar
@@ -1195,9 +1205,9 @@ export function MotherSchedulePageContent() {
     }
 
     return (
-        <div className="relative mx-auto w-full max-w-[520px] pb-24 lg:max-w-[720px]">
+        <div className="relative mx-auto w-full max-w-[520px] pb-24">
             <div
-                className="mb-4 flex rounded-xl bg-shell-sidebar px-1.5 py-1 shadow-[inset_0_1px_2px_rgba(26,44,52,0.05)] lg:mx-auto lg:max-w-[720px]"
+                className="mb-4 flex rounded-xl bg-shell-sidebar px-1.5 py-1 shadow-[inset_0_1px_2px_rgba(26,44,52,0.05)]"
                 role="tablist"
                 aria-label="Schedule"
             >
@@ -1243,8 +1253,8 @@ export function MotherSchedulePageContent() {
                                     type="button"
                                     aria-pressed={selected}
                                     className={`shrink-0 rounded-full px-4 py-2 text-[0.78rem] font-semibold whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${selected
-                                        ? "bg-brand text-white"
-                                        : "bg-[#eef1f3] text-[#2a3340]"
+                                            ? "bg-brand text-white"
+                                            : "bg-[#eef1f3] text-[#2a3340]"
                                         }`}
                                     onClick={() => setFilter(id)}
                                 >
@@ -1279,6 +1289,13 @@ export function MotherSchedulePageContent() {
                                 const providerName = providerProfile?.full_name?.trim() || "Assigned Specialist";
                                 const profession = providerJoin?.profession?.trim() || "Postpartum Specialist";
                                 const badge = toStatusBadge(a.status);
+                                const locationDetail =
+                                    a.location_detail?.trim() ||
+                                    (a.location_type === "home"
+                                        ? "Home Visit - Your Residence"
+                                        : a.location_type === "virtual"
+                                            ? "Virtual Visit (Encrypted Video Link)"
+                                            : "Clinic location details will be shared soon");
                                 return (
                                     <li
                                         key={a.id}
@@ -1302,11 +1319,27 @@ export function MotherSchedulePageContent() {
                                                 {badge.label}
                                             </span>
                                         </div>
-                                        <div className="mb-2.5 border-t border-[#edf1f3] pt-2.5 text-[0.9rem] text-[#33404d]">
-                                            <p className="m-0 font-bold">
-                                                {formatShortDate(a.starts_at)} · {formatTime(a.starts_at)}
-                                            </p>
-                                            <p className="m-0 mt-1 text-[0.86rem] text-muted">{a.location_detail?.trim() || "Location pending confirmation"}</p>
+                                        <div className="mb-2.5 border-t border-[#edf1f3] pt-2.5">
+                                            <div className="flex items-start gap-2.5">
+                                                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-[#f2f5f7] text-[#9aa5b5]">
+                                                    <CalendarDays size={13} />
+                                                </span>
+                                                <div>
+                                                    <p className="m-0 text-[0.62rem] font-extrabold uppercase tracking-wide text-[#9aa5b5]">Date & Time</p>
+                                                    <p className="m-0 mt-0.5 text-[0.9rem] font-bold text-[#33404d]">
+                                                        {formatShortDate(a.starts_at)} · {formatTime(a.starts_at)}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="mt-2 flex items-start gap-2.5">
+                                                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-[#f2f5f7] text-[#9aa5b5]">
+                                                    <MapPin size={13} />
+                                                </span>
+                                                <div>
+                                                    <p className="m-0 text-[0.62rem] font-extrabold uppercase tracking-wide text-[#9aa5b5]">Location</p>
+                                                    <p className="m-0 mt-0.5 text-[0.86rem] text-muted">{locationDetail}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <button
                                             type="button"
@@ -1336,7 +1369,7 @@ export function MotherSchedulePageContent() {
                             </div>
                             <button
                                 type="button"
-                                className="fixed bottom-[calc(88px+env(safe-area-inset-bottom,0))] lg:hidden right-5 z-[35] grid size-14 place-items-center rounded-full border-0 bg-brand text-white shadow-[0_8px_24px_rgba(46,125,120,0.35)] lg:bottom-8 lg:right-8"
+                                className="fixed bottom-[calc(88px+env(safe-area-inset-bottom,0))] right-5 z-[35] grid size-14 place-items-center rounded-full border-0 bg-brand text-white shadow-[0_8px_24px_rgba(46,125,120,0.35)] lg:bottom-8 lg:right-8 lg:hidden"
                                 aria-label="Request care"
                                 onClick={() => setView({ type: "request_form" })}
                             >

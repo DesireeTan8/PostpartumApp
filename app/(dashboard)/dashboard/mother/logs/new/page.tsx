@@ -3,8 +3,8 @@
 import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { MotherDashboardShell } from "@/components/layout/mother-dashboard-shell";
-import { MotherNewLogDrawer } from "@/components/dashboard/health-logs/mother-new-log-drawer";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
+import { MotherNewLogDrawer } from "@/components/dashboard/mother/health-logs/mother-new-log-drawer";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
 
 function MotherNewLogFormHeader() {
     const searchParams = useSearchParams();

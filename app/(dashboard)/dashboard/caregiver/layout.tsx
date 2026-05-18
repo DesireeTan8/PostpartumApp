@@ -1,7 +1,7 @@
 "use client";
 
-import { CaregiverAppShell } from "@/components/dashboard/caregiver/caregiver-app-shell";
+import { CaregiverDashboardShell } from "@/components/layout/caregiver-dashboard-shell";
 
 export default function CaregiverLayout({ children }: { children: React.ReactNode }) {
-    return <CaregiverAppShell>{children}</CaregiverAppShell>;
+    return <CaregiverDashboardShell>{children}</CaregiverDashboardShell>;
 }

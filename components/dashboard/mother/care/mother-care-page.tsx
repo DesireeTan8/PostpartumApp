@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
 import {
     Activity,
     CalendarDays,
@@ -24,7 +24,7 @@ import {
     type CareReminderCategory,
     type CareReminderRecurrence,
 } from "@/lib/care-reminders";
-import { MotherReminderDrawer } from "@/components/dashboard/care/mother-reminder-drawer";
+import { MotherReminderDrawer } from "@/components/dashboard/mother/care/mother-reminder-drawer";
 
 type ReminderJoin = {
     id: string;
@@ -87,56 +87,55 @@ export function MotherCarePageContent() {
         };
         const status = statusMap[tab];
 
-        const { data, error } = await supabase
-            .from("care_reminder_events")
+        const { data: reminders, error: remErr } = await supabase
+            .from("care_reminders")
             .select(
-                `
-        id,
-        due_at,
-        status,
-        completed_at,
-        reminder_id,
-        care_reminders (
-          id,
-          title,
-          category,
-          instructions,
-          recurrence,
-          reminder_time,
-          start_date,
-          end_date,
-          is_active,
-          mother_user_id
-        )
-      `
+                "id, title, category, instructions, recurrence, reminder_time, start_date, end_date, is_active, mother_user_id"
             )
+            .eq("mother_user_id", uid)
+            .eq("is_active", true);
+
+        if (remErr) {
+            if (process.env.NODE_ENV === "development") {
+                console.warn("[MotherCarePage] care_reminders:", remErr.message);
+            }
+            setRows([]);
+            return;
+        }
+
+        const reminderRows = (reminders ?? []) as (ReminderJoin & { mother_user_id: string })[];
+        const reminderIds = reminderRows.map((r) => r.id);
+        if (reminderIds.length === 0) {
+            setRows([]);
+            return;
+        }
+
+        const reminderById = new Map(reminderRows.map((r) => [r.id, r]));
+
+        const { data: rawEvents, error: evErr } = await supabase
+            .from("care_reminder_events")
+            .select("id, due_at, status, completed_at, reminder_id")
+            .in("reminder_id", reminderIds)
             .eq("status", status)
             .order("due_at", { ascending: tab === "active" });
 
-        if (error) {
-            console.error(error);
+        if (evErr) {
+            if (process.env.NODE_ENV === "development") {
+                console.warn("[MotherCarePage] care_reminder_events:", evErr.message);
+            }
             setRows([]);
             return;
         }
 
         const list: CareEventListRow[] = [];
-        for (const raw of data ?? []) {
-            const r = raw as unknown as {
-                id: string;
-                due_at: string;
-                status: "pending" | "completed" | "missed";
-                completed_at: string | null;
-                reminder_id: string;
-                care_reminders: (ReminderJoin & { mother_user_id: string }) | (ReminderJoin & { mother_user_id: string })[] | null;
-            };
-            const remRaw = r.care_reminders;
-            const rem = Array.isArray(remRaw) ? remRaw[0] : remRaw;
-            if (!rem || rem.mother_user_id !== uid || !rem.is_active) continue;
+        for (const r of rawEvents ?? []) {
+            const rem = reminderById.get(r.reminder_id);
+            if (!rem) continue;
             list.push({
                 event: {
                     id: r.id,
                     due_at: r.due_at,
-                    status: r.status,
+                    status: r.status as "pending" | "completed" | "missed",
                     completed_at: r.completed_at,
                 },
                 reminder: {
@@ -204,14 +203,16 @@ export function MotherCarePageContent() {
 
     useEffect(() => {
         setPageHeader({
-            title: "Care plan",
+            title: "Care Plan",
             layout: "standard",
+            showSearch: false,
             showNotifications: false,
             showSettings: false,
+            showProfile: false,
             trailing: (
                 <button
                     type="button"
-                    className="inline-flex size-10 items-center justify-center rounded-xl border-0 bg-transparent text-brand transition-colors hover:bg-[#eef5f5] lg:size-11 lg:ml-auto"
+                    className="inline-flex size-10 items-center justify-center rounded-xl border-0 bg-transparent text-brand transition-colors hover:bg-[#eef5f5] lg:size-11"
                     aria-label="Add reminder"
                     onClick={() => setShowDrawer(true)}
                 >
@@ -267,9 +268,9 @@ export function MotherCarePageContent() {
     ];
 
     return (
-        <div className="relative mx-auto w-full max-w-[520px] pb-28 lg:max-w-[760px]">
+        <div className="relative mx-auto w-full max-w-[520px] pb-28">
             <div
-                className="mb-5 flex rounded-xl bg-shell-sidebar p-1.5 shadow-[inset_0_1px_2px_rgba(26,44,52,0.05)]"
+                className="mb-5 flex rounded-xl bg-shell-sidebar px-1.5 py-1 shadow-[inset_0_1px_2px_rgba(26,44,52,0.05)]"
                 role="tablist"
                 aria-label="Reminder status"
             >
@@ -281,7 +282,7 @@ export function MotherCarePageContent() {
                             type="button"
                             role="tab"
                             aria-selected={selected}
-                            className={`min-h-10 flex-1 rounded-[10px] text-[0.82rem] font-extrabold transition-colors ${selected ? "bg-white text-[#2a3340] shadow-sm" : "text-[#6a7486]"
+                            className={`min-h-9 flex-1 rounded-[10px] text-[0.82rem] font-semibold transition-colors ${selected ? "bg-white text-[#2a3340] shadow-sm" : "text-[#6a7486]"
                                 }`}
                             onClick={() => setTab(id)}
                         >
@@ -344,8 +345,8 @@ export function MotherCarePageContent() {
                                             <button
                                                 type="button"
                                                 className={`grid size-11 shrink-0 place-items-center rounded-xl border-2 transition-colors ${completingId === row.event.id
-                                                    ? "border-[#dce3e8] bg-[#f4f7f8] text-muted"
-                                                    : "border-[#dce8e6] bg-white text-brand hover:border-brand"
+                                                        ? "border-[#dce3e8] bg-[#f4f7f8] text-muted"
+                                                        : "border-[#dce8e6] bg-white text-brand hover:border-brand"
                                                     }`}
                                                 aria-label={`Mark ${row.reminder.title} done`}
                                                 disabled={completingId === row.event.id}
@@ -360,8 +361,8 @@ export function MotherCarePageContent() {
                                         ) : (
                                             <span
                                                 className={`grid size-11 place-items-center rounded-xl text-[0.65rem] font-extrabold uppercase ${tab === "done"
-                                                    ? "bg-[#e8f6f5] text-[#1f6b5c]"
-                                                    : "bg-[#fce8f0] text-[#9b3d60]"
+                                                        ? "bg-[#e8f6f5] text-[#1f6b5c]"
+                                                        : "bg-[#fce8f0] text-[#9b3d60]"
                                                     }`}
                                             >
                                                 {tab === "done" ? "Done" : "Missed"}

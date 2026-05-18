@@ -16,8 +16,8 @@ import {
     Trash2,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
-import { useHealthLogsNav } from "@/components/dashboard/health-logs/health-logs-nav-context";
-import { MotherNewLogDrawer } from "@/components/dashboard/health-logs/mother-new-log-drawer";
+import { useHealthLogsNav } from "@/components/dashboard/mother/health-logs/health-logs-nav-context";
+import { MotherNewLogDrawer } from "@/components/dashboard/mother/health-logs/mother-new-log-drawer";
 
 export type HealthLogRow = {
     id: string;

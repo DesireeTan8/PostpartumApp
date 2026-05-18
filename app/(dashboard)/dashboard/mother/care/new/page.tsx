@@ -3,8 +3,8 @@
 import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { MotherDashboardShell } from "@/components/layout/mother-dashboard-shell";
-import { MotherReminderDrawer } from "@/components/dashboard/care/mother-reminder-drawer";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
+import { MotherReminderDrawer } from "@/components/dashboard/mother/care/mother-reminder-drawer";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
 
 function MotherCareReminderFormHeader() {
     const searchParams = useSearchParams();

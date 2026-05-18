@@ -157,7 +157,7 @@ export default function MotherRegistrationPage() {
     };
 
     const panelClass =
-        "rounded-2xl border border-[#e8dfd0] bg-surface p-5 shadow-[0_4px_20px_rgba(45,55,72,0.06)] [&_h3]:mb-2.5 [&_h3]:mt-0 [&_h3]:text-base [&_h3]:font-extrabold [&_h3]:text-ink [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:leading-normal [&_p]:text-muted";
+        "rounded-2xl border border-[#e8dfd0] bg-surface p-5 shadow-[0_4px_20px_rgba(45,55,72,0.06)] lg:rounded-[18px] lg:p-7 [&_h3]:mb-2.5 [&_h3]:mt-0 [&_h3]:text-base [&_h3]:font-extrabold [&_h3]:text-ink [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:leading-normal [&_p]:text-muted";
 
     const sidebar = (
         <>
@@ -184,13 +184,13 @@ export default function MotherRegistrationPage() {
 
     return (
         <RegistrationLayout activeRole="mother" mobileTitle="New mother profile" sidebar={sidebar}>
-            <div className="my-5 mb-6 [&_h2]:m-0 [&_h2]:text-[32px] [&_h2]:font-extrabold [&_h2]:leading-[1.12] [&_p]:mt-3 [&_p]:text-[1.12rem] [&_p]:leading-normal [&_p]:text-muted">
+            <div className="my-5 mb-6 lg:mb-10 lg:mt-10 [&_h2]:m-0 [&_h2]:text-[32px] [&_h2]:font-extrabold [&_h2]:leading-[1.12] lg:[&_h2]:text-[40px] [&_p]:mt-3 [&_p]:text-[1.12rem] [&_p]:leading-normal [&_p]:text-muted lg:[&_p]:max-w-[680px] lg:[&_p]:text-[18px]">
                 <h2>New mother profile</h2>
                 <p>Let&apos;s set up your profile to personalize your postpartum recovery journey.</p>
             </div>
 
-            <form className="flex flex-col gap-3.5" onSubmit={handleSubmit}>
-                <section className="flex flex-col gap-2.5 rounded-[11px] border border-line bg-[#f7f9fa] p-3.5 [&_label]:text-base [&_label]:font-semibold [&_label]:text-[#4e5769]">
+            <form className="flex flex-col gap-3.5 lg:gap-7" onSubmit={handleSubmit}>
+                <section className="flex flex-col gap-2.5 rounded-[11px] border border-line bg-[#f7f9fa] p-3.5 lg:rounded-[18px] lg:border-[#e3e8ed] lg:bg-white lg:p-7 [&_label]:text-base [&_label]:font-semibold [&_label]:text-[#4e5769]">
                     <h3 className="m-0 flex items-center gap-2 text-lg font-bold text-[#44a8a8]">
                         <User size={16} /> Personal information
                     </h3>
@@ -200,7 +200,7 @@ export default function MotherRegistrationPage() {
                         <User size={15} />
                         <input
                             id="fullName"
-                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b]"
+                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b] lg:bg-white lg:py-3.5 lg:text-[15px]"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             required
@@ -212,7 +212,7 @@ export default function MotherRegistrationPage() {
                         <Mail size={15} />
                         <input
                             id="email"
-                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b]"
+                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b] lg:bg-white lg:py-3.5 lg:text-[15px]"
                             value={email}
                             disabled
                             readOnly
@@ -223,7 +223,7 @@ export default function MotherRegistrationPage() {
                         <Phone size={15} />
                         <input
                             id="phone"
-                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b]"
+                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b] lg:bg-white lg:py-3.5 lg:text-[15px]"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             autoComplete="tel"
@@ -231,7 +231,7 @@ export default function MotherRegistrationPage() {
                     </div>
                 </section>
 
-                <section className="flex flex-col gap-2.5 rounded-[11px] border border-line bg-[#eef6f6] p-3.5 [&_label]:text-base [&_label]:font-semibold [&_label]:text-[#4e5769]">
+                <section className="flex flex-col gap-2.5 rounded-[11px] border border-line bg-[#eef6f6] p-3.5 lg:rounded-[18px] lg:border-[#e3e8ed] lg:bg-white lg:p-7 [&_label]:text-base [&_label]:font-semibold [&_label]:text-[#4e5769]">
                     <h3 className="m-0 flex items-center gap-2 text-lg font-bold text-[#44a8a8]">
                         <Stethoscope size={16} /> Healthcare journey
                     </h3>
@@ -243,7 +243,7 @@ export default function MotherRegistrationPage() {
                         <Stethoscope size={15} />
                         <select
                             id="pcp"
-                            className="w-full cursor-pointer rounded-[11px] border border-line bg-[#f7f9fa] py-3.5 pl-[38px] pr-3 text-sm text-[#4f586b]"
+                            className="w-full cursor-pointer rounded-[11px] border border-line bg-[#f7f9fa] py-3.5 pl-[38px] pr-3 text-sm text-[#4f586b] lg:bg-white lg:py-3.5 lg:text-[15px]"
                             value={primaryCareProviderId}
                             onChange={(e) => setPrimaryCareProviderId(e.target.value)}
                         >
@@ -262,7 +262,7 @@ export default function MotherRegistrationPage() {
                     ) : null}
                 </section>
 
-                <section className="flex flex-col gap-2.5 rounded-[11px] border border-line bg-[#f7f9fa] p-3.5 [&_label]:text-base [&_label]:font-semibold [&_label]:text-[#4e5769]">
+                <section className="flex flex-col gap-2.5 rounded-[11px] border border-line bg-[#f7f9fa] p-3.5 lg:rounded-[18px] lg:border-[#e3e8ed] lg:bg-white lg:p-7 [&_label]:text-base [&_label]:font-semibold [&_label]:text-[#4e5769]">
                     <h3 className="m-0 flex items-center gap-2 text-lg font-bold text-[#44a8a8]">
                         <HeartPulse size={16} /> Recovery details
                     </h3>
@@ -275,7 +275,7 @@ export default function MotherRegistrationPage() {
                         <input
                             id="deliveryDate"
                             type="date"
-                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b]"
+                            className="w-full rounded-[11px] border border-line bg-[#f7f9fa] py-4 pl-[38px] pr-3.5 text-sm text-[#4f586b] lg:bg-white lg:py-3.5 lg:text-[15px]"
                             value={deliveryDate}
                             onChange={(e) => setDeliveryDate(e.target.value)}
                             required

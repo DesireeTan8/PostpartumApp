@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { MotherDashboardShell } from "@/components/layout/mother-dashboard-shell";
-import { MotherReminderDetail } from "@/components/dashboard/care/mother-reminder-detail";
+import { MotherReminderDetail } from "@/components/dashboard/mother/care/mother-reminder-detail";
 
 export default function MotherReminderInfoPage() {
     const params = useParams();

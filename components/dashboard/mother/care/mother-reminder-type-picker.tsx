@@ -40,8 +40,8 @@ export function MotherReminderTypePicker({ value, onChange }: Props) {
                         role="option"
                         aria-selected={selected}
                         className={`flex min-w-[76px] shrink-0 flex-col items-center gap-1.5 rounded-xl border-2 px-2.5 py-2.5 text-center transition-colors ${selected
-                            ? "border-brand bg-[#eaf6f5] text-[#1f5c59]"
-                            : "border-[#e3eaed] bg-white text-[#415063] hover:border-[#c5ddd4]"
+                                ? "border-brand bg-[#eaf6f5] text-[#1f5c59]"
+                                : "border-[#e3eaed] bg-white text-[#415063] hover:border-[#c5ddd4]"
                             }`}
                         onClick={() => onChange(id)}
                     >

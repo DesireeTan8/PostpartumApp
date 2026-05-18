@@ -199,7 +199,7 @@ export default function MotherProfilePage() {
     return (
         <MotherDashboardShell>
             <div className="pb-6 lg:mx-auto lg:max-w-[520px]">
-                <h1 className="mb-5 text-[1.35rem] font-extrabold">Profile</h1>
+                <h1 className="mb-5 hidden text-[1.35rem] font-extrabold lg:block">Profile</h1>
                 {loading ? (
                     <p className="mt-8 text-center text-sm text-[#4f586b]">Loading profile…</p>
                 ) : (

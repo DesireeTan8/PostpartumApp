@@ -6,7 +6,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { AlertCircle, Clock3, Lock, MessageCircle, ShieldCheck } from "lucide-react";
 import { concernLabel, epdsOptionsForOrdinal, type EpdQuestion } from "@/lib/epds";
 import { supabase } from "@/lib/supabase/client";
-import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header-context";
+import { useMotherPageHeader } from "@/components/layout/mother-dashboard-header";
 
 type ConcernLevel = "low" | "moderate" | "high";
 
